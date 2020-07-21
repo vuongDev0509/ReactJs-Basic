@@ -1,0 +1,84 @@
+.vv-container-form{
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+.vv-container-form .vv-content-form{
+	display: inline-block;
+	width: 90%;
+	max-width: 600px;
+	margin: 0 auto;
+	position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.vv-content-form .bt-title{
+	width: 100%;
+	height: auto;
+	font-size: 20px;
+	line-height: 30px;
+	letter-spacing: 0.32px;
+	text-align: left;
+	background-color:#ed6923;
+	color: #fff;
+	display: inline-block;
+	border: 1px solid #eee;
+    border-top: none;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+.vv-content-form > form{
+	height: auto;
+	padding: 20px;
+}
+.vv-content-form > form .item-title{
+
+}
+.vv-content-form > form .item-form, .vv-content-form > form .item-title{
+	font-size: 18px;
+	line-height: 28px;
+	font-weight: 400;
+	letter-spacing: 0.16px;	
+	display: inline-block;
+	width: 100%;
+	box-sizing: border-box;
+}
+.vv-content-form > form .item-form{
+	padding: 10px;
+	margin-top: 10px;
+}
+.vv-content-form .bt-btn-group{
+	margin-top: 50px;
+}
+.bt-btn-group > .bt-item-btn{
+	font-size: 16px;
+	line-height: 35px;
+	width: 100px;
+	font-weight: 500;
+	border: none;
+}
+.bt-btn-group{
+	width: 100%;
+	overflow: hidden;
+}
+.bt-btn-group > .bt-item-btn.btn-btn-save{
+	background-color: #ed6923;
+	margin-right: 15px;
+}
+.bt-group .bt-item-radio{
+	width: 50%;
+	max-width: 100px;
+    float: left;
+    display: flex;
+    justify-content: flex-start;
+}
+.bt-group.bt-group-checkbox{
+	width: 100%;
+}
+.bt-group.bt-group-checkbox .bt-content-groupp-checkbox{
+	width: 100%;
+	display: flex;
+	max-width: 60px;
+	padding-left: 100px;
+}
