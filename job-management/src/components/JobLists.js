@@ -3,15 +3,18 @@ import JobItems from './JobItems.js';
 class JobLists extends React.Component {
   render() {
     let itemJobs = this.props.jobs;
-    console.log(itemJobs);
     let elmJob = itemJobs.map((job, index) =>{
         let result =  <JobItems key={index} 
-                                id={index} 
+                                id={job.id}
+                                stt={index} 
                                 name={job.name} 
                                 user={job.user}
                                 pass={job.pass}
                                 status={job.status}
-                                jobs={itemJobs} />;
+                                jobs={itemJobs} 
+                                onChangeStatus={this.props.onChangeStatus}
+                                onDeleteJob = {this.props.onDeleteJob}
+                      />;
         return result;
     });
     return (
