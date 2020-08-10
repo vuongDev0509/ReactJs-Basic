@@ -6,6 +6,9 @@ class JobItems extends React.Component {
   onDeleteJob = () =>{
     this.props.onDeleteJob(this.props.id);
   }
+  onEditJob = () =>{
+    this.props.onEditJob(this.props.id);
+  }
   render() {
     return (
       <tr>
@@ -20,7 +23,10 @@ class JobItems extends React.Component {
           
         </td>
         <td className="text-center">
-          <button type="button" className="vv-btn btn-edit">
+          <button type="button" 
+                  className="vv-btn btn-edit"
+                  onClick = {this.onEditJob}
+          >
             <span className="fa fa-pencil mr-5"></span> Edit
           </button>
           <button type="button" 

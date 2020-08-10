@@ -3,9 +3,10 @@ class TaskForm extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      id: '',
       name: '',
       user: '',
-      password: '',
+      pass: '',
       status: false
     };
   };
@@ -25,26 +26,56 @@ class TaskForm extends React.Component {
   };
   onSubmit = (event) =>{
     event.preventDefault();
-    console.log(this.state);
     this.props.onSubmit(this.state);
     this.onCloseForm();
     this.setCloseForm();
   };
   onCloseForm = () =>{
-    let { a } = this.state;
-    console.log(a);
     this.setState({
       name: '',
       user: '',
-      password: '',
+      pass: '',
       status: false
     });
   }
+  componentWillMount = () =>{
+    if(this.props.jobEdit){
+      this.setState({
+        id: this.props.jobEdit.id,
+        name: this.props.jobEdit.name,
+        user: this.props.jobEdit.user,
+        pass: this.props.jobEdit.pass,
+        status: this.props.jobEdit.status
+      });
+    }
+  }
+  componentWillReceiveProps =(nextProps) =>{
+    if(nextProps && nextProps.jobEdit){
+      this.setState({
+        id: nextProps.id,
+        name: nextProps.jobEdit.name,
+        user: nextProps.jobEdit.user,
+        pass: nextProps.jobEdit.pass,
+        status: nextProps.jobEdit.status
+      });
+    }else if(!nextProps.jobs){
+      // does not exist jobs
+      this.setState = {
+        id: '',
+        name: '',
+        user: '',
+        pass: '',
+        status: false
+      };
+    }
+  }
   render() {
+    let { id } = this.state;
     return (
       <div className="column col-xl-6 col-md-6 col-lg-12 col-lg-12"> 
         <div className="vv-container-taskForm"> 
-            <h3 className="vv-title main-color"> Add Job
+            <h3 className="vv-title main-color">
+              {id ===  '' ? 'Add Job' : 'Update Job'}
               <i className="fa fa-times" 
                   aria-hidden="true"
                   onClick  = {this.setCloseForm}
@@ -72,7 +103,7 @@ class TaskForm extends React.Component {
                                    className="form-control main-color" 
                                    placeholder="Please Enter User" 
                                    name="user"
-                                   value={this.state.value}
+                                   value={this.state.user}
                                    onChange ={this.onHandleChange}
                             />
                         </div>
@@ -82,11 +113,11 @@ class TaskForm extends React.Component {
                     <div className="column col-xl-6 col-md-6 col-lg-12 col-lg-12"> 
                       <div className="vv-group"> 
                           <label> Password: </label>
-                          <input type="password" 
+                          <input type="text" 
                                  className="form-control main-color" 
                                  placeholder="Please Enter Password"
-                                 name="password"
-                                 value={this.state.value}
+                                 name="pass"
+                                 value={this.state.pass}
                                  onChange ={this.onHandleChange} 
                           />
                       </div>

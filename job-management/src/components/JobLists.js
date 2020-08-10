@@ -14,6 +14,7 @@ class JobLists extends React.Component {
                                 jobs={itemJobs} 
                                 onChangeStatus={this.props.onChangeStatus}
                                 onDeleteJob = {this.props.onDeleteJob}
+                                onEditJob ={this.props.onEditJob}
                       />;
         return result;
     });

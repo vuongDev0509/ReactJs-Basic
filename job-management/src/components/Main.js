@@ -8,7 +8,8 @@ class Main extends React.Component {
     super(props);
     this.state = {
       jobs: [],
-      isDisplayForm: false
+      isDisplayForm: false,
+      jobEdit: null
     }
   }
   componentWillMount(){
@@ -24,18 +25,47 @@ class Main extends React.Component {
     return a + "-" + uuidv4();
   }
   onToggleForm = (values) =>{
+    console.log(values);
     if(values){
-      this.setState({
-        isDisplayForm: !this.state.isDisplayForm
-      });
+      if(this.state.isDisplayForm && this.state.jobEdit !== null){
+        this.setState({
+          isDisplayForm: true,
+          jobEdit: null
+        });
+      }else{
+        this.setState({
+          isDisplayForm: !this.state.isDisplayForm,
+          jobEdit: null
+        });
+      }
+      
     }
+  }
+  onShowForm = () =>{
+    this.setState({
+        isDisplayForm: true
+      });
+  }
+  onCloseForm = () =>{
+    this.setState({
+        isDisplayForm: false
+      });
   }
   onSubmit = (data) =>{
     let jobs = this.state.jobs;
-    data.id = this.generateDataId();
-    jobs.push(data);
+    if(data.id === ''){
+      // add job
+      data.id = this.generateDataId();
+      jobs.push(data);
+    }else{
+      // edit job
+       let index = this.findIndex(data.id);
+       jobs[index] = data;
+    }
+    
     this.setState({
-      jobs: jobs
+      jobs: jobs,
+      jobEdit: null
     });
     localStorage.setItem('jobs', JSON.stringify(jobs));
     // localStorage.clear();
@@ -71,11 +101,21 @@ class Main extends React.Component {
       });
       localStorage.setItem('jobs', JSON.stringify(jobs));
     }
-    this.onToggleForm(true);
+    this.onCloseForm();
+  }
+  onEditJob = (id) =>{
+    let jobs = this.state.jobs;
+    let index = this.findIndex(id);
+    let jobEdit = jobs[index];
+    this.setState({
+      jobEdit: jobEdit  
+    });
+    this.onShowForm();
   }
   render() {
+    const { jobEdit } = this.state;
     let isDisplayForm = this.state.isDisplayForm;
-    let elmDisplayForm = isDisplayForm === true ? <TaskForm  onToggleForm = {this.onToggleForm}  onSubmit={this.onSubmit} />  : "";
+    let elmDisplayForm = isDisplayForm === true ? <TaskForm jobEdit={jobEdit}  onToggleForm = {this.onToggleForm}  onSubmit={this.onSubmit} />  : "";
     return (
       <div className="vv-container-main-job-managements"> 
           <div className="container"> 
@@ -92,6 +132,7 @@ class Main extends React.Component {
                 <JobLists jobs = {this.state.jobs}
                           onChangeStatus={this.onChangeStatus}
                           onDeleteJob = {this.onDeleteJob}
+                          onEditJob = {this.onEditJob}
                 /> 
               </div>
             </div>
