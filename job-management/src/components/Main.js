@@ -9,7 +9,11 @@ class Main extends React.Component {
     this.state = {
       jobs: [],
       isDisplayForm: false,
-      jobEdit: null
+      jobEdit: null, 
+      filter: {
+        name: '',
+        status: -1
+      }
     }
   }
   componentWillMount(){
@@ -25,7 +29,6 @@ class Main extends React.Component {
     return a + "-" + uuidv4();
   }
   onToggleForm = (values) =>{
-    console.log(values);
     if(values){
       if(this.state.isDisplayForm && this.state.jobEdit !== null){
         this.setState({
@@ -53,6 +56,7 @@ class Main extends React.Component {
   }
   onSubmit = (data) =>{
     let jobs = this.state.jobs;
+    console.log(jobs);
     if(data.id === ''){
       // add job
       data.id = this.generateDataId();
@@ -112,9 +116,31 @@ class Main extends React.Component {
     });
     this.onShowForm();
   }
+  onFilter = (filterName, filterStatus) =>{
+    filterStatus = parseInt(filterStatus, 10);
+    this.setState({
+      filter :{
+        name: filterName,
+        status: filterStatus
+      }
+    });
+  }
   render() {
-    const { jobEdit } = this.state;
+    const {jobEdit, filter } = this.state;
+    let jobs = this.state.jobs;
     let isDisplayForm = this.state.isDisplayForm;
+    console.log(jobs);
+    if(filter){
+      console.log(filter,  "+", filter.name);
+      if(filter.name){
+        jobs = jobs.filter((job) =>{
+          console.log(job.name);
+          let a = job.name.toLowerCase()
+          return a.indexOf(filter.name) !== -1;
+        });
+      }
+    }
+    console.log(jobs);
     let elmDisplayForm = isDisplayForm === true ? <TaskForm jobEdit={jobEdit}  onToggleForm = {this.onToggleForm}  onSubmit={this.onSubmit} />  : "";
     return (
       <div className="vv-container-main-job-managements"> 
@@ -133,6 +159,7 @@ class Main extends React.Component {
                           onChangeStatus={this.onChangeStatus}
                           onDeleteJob = {this.onDeleteJob}
                           onEditJob = {this.onEditJob}
+                          onFilter = {this.onFilter}
                 /> 
               </div>
             </div>

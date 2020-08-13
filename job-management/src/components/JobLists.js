@@ -1,8 +1,28 @@
 import React from 'react';
 import JobItems from './JobItems.js';
 class JobLists extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      filterName : '',
+      filterStatus: -1
+    }
+  }
+  onChange = (event) =>{
+    var target = event.target;
+    var name = target.name;
+    var value = target.value;
+    // console.log(value, "+", name);
+    this.setState({
+      [name] : value
+    })
+    this.props.onFilter( name === 'filterName' ? value : this.state.filterName,
+                         name === 'filterStatus' ? value : this.state.filterStatus,
+    )
+  }
   render() {
     let itemJobs = this.props.jobs;
+    let {filterName, filterStatus} = this.state;
     let elmJob = itemJobs.map((job, index) =>{
         let result =  <JobItems key={index} 
                                 id={job.id}
@@ -36,14 +56,25 @@ class JobLists extends React.Component {
               <tbody>
                 <tr>
                   <td></td>
-                  <td> <input type="text" className="vv-input-search-table form-control" /> </td>
+                  <td>
+                    <input type="text" 
+                           className="vv-input-search-table form-control" 
+                           name="filterName"
+                           value={filterName}
+                           onChange = {this.onChange}
+                    /> 
+                  </td>
                   <td></td>
                   <td></td>
                   <td>
-                    <select className="vv-select-status form-control">
-                      <option value="-1">ALL</option>
-                      <option value="0">Active</option>
-                      <option value="1">Deactive</option>
+                    <select className="vv-select-status form-control"
+                            name="filterStatus"
+                            value={this.state.filterStatus}
+                            onChange = {this.onChange}
+                    >
+                      <option value={-1}>ALL</option>
+                      <option value={1}>Active</option>
+                      <option value={0}>Deactive</option>
                     </select>
                   </td>
                   <td></td>

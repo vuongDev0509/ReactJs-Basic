@@ -60,17 +60,18 @@ class TaskForm extends React.Component {
       });
     }else if(!nextProps.jobs){
       // does not exist jobs
-      this.setState = {
+      this.setState({
         id: '',
         name: '',
         user: '',
         pass: '',
         status: false
-      };
+      });
     }
   }
   render() {
     let { id } = this.state;
+    console.log(id);
     return (
       <div className="column col-xl-6 col-md-6 col-lg-12 col-lg-12"> 
         <div className="vv-container-taskForm"> 
