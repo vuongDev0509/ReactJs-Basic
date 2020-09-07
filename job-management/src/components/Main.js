@@ -117,30 +117,45 @@ class Main extends React.Component {
     this.onShowForm();
   }
   onFilter = (filterName, filterStatus) =>{
+    const { filter } = this.state;
     filterStatus = parseInt(filterStatus, 10);
-    this.setState({
-      filter :{
-        name: filterName,
-        status: filterStatus
-      }
-    });
+     this.setState({ 
+        filter :{
+          name: filterName,
+          status: filterStatus
+        }
+      },() => {
+        const name = this.state.filter.name; 
+        this.getFilter(name);
+    });  
   }
+  getFilter = (name) =>{
+    let jobs = this.state.jobs;
+    if(name){
+      let result;
+      console.log(jobs);
+      const newjobs = jobs.filter((job) =>{          
+        return result = job.name.toLowerCase().includes(name) !== false;
+        
+        // return result = job.name.includes(name.toLowercase()) !== false;
+
+      });
+
+      this.setState({
+          jobs: newjobs
+      });
+    }else{
+      let jobs = JSON.parse(localStorage.getItem('jobs'));
+      this.setState({
+        jobs: jobs
+      });
+    }
+  }
+
   render() {
     const {jobEdit, filter } = this.state;
     let jobs = this.state.jobs;
     let isDisplayForm = this.state.isDisplayForm;
-    console.log(jobs);
-    if(filter){
-      console.log(filter,  "+", filter.name);
-      if(filter.name){
-        jobs = jobs.filter((job) =>{
-          console.log(job.name);
-          let a = job.name.toLowerCase()
-          return a.indexOf(filter.name) !== -1;
-        });
-      }
-    }
-    console.log(jobs);
     let elmDisplayForm = isDisplayForm === true ? <TaskForm jobEdit={jobEdit}  onToggleForm = {this.onToggleForm}  onSubmit={this.onSubmit} />  : "";
     return (
       <div className="vv-container-main-job-managements"> 

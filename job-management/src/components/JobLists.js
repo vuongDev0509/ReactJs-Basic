@@ -12,18 +12,22 @@ class JobLists extends React.Component {
     var target = event.target;
     var name = target.name;
     var value = target.value;
-    // console.log(value, "+", name);
+    
     this.setState({
       [name] : value
     })
+
     this.props.onFilter( name === 'filterName' ? value : this.state.filterName,
                          name === 'filterStatus' ? value : this.state.filterStatus,
     )
+    
   }
+  
   render() {
     let itemJobs = this.props.jobs;
     let {filterName, filterStatus} = this.state;
     let elmJob = itemJobs.map((job, index) =>{
+
         let result =  <JobItems key={index} 
                                 id={job.id}
                                 stt={index} 
