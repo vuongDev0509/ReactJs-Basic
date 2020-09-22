@@ -16,6 +16,7 @@ class Main extends React.Component {
       }
     }
   }
+
   componentWillMount(){
     if(localStorage && localStorage.getItem('jobs')){
       var jobs = JSON.parse(localStorage.getItem('jobs'));
@@ -74,6 +75,8 @@ class Main extends React.Component {
     localStorage.setItem('jobs', JSON.stringify(jobs));
     // localStorage.clear();
   }
+
+
   onChangeStatus = (id) =>{
     let jobs = this.state.jobs;
     let index = this.findIndex(id);
@@ -107,6 +110,7 @@ class Main extends React.Component {
     }
     this.onCloseForm();
   }
+
   onEditJob = (id) =>{
     let jobs = this.state.jobs;
     let index = this.findIndex(id);
@@ -116,41 +120,44 @@ class Main extends React.Component {
     });
     this.onShowForm();
   }
-  onFilter = (filterName, filterStatus) =>{
-    const { filter } = this.state;
-    filterStatus = parseInt(filterStatus, 10);
-     this.setState({ 
-        filter :{
-          name: filterName,
-          status: filterStatus
-        }
-      },() => {
-        const name = this.state.filter.name; 
-        this.getFilter(name);
-    });  
+
+
+  // filter jobs by status
+  onFilterStatus = (status) =>{  
+    let jobs = JSON.parse(localStorage.getItem('jobs'));
+    let newJob = jobs.filter((job) =>{
+      if (job.status == status) {
+        return jobs;
+      }else if(status == -1){
+        return jobs = JSON.parse(localStorage.getItem('jobs'));
+      }
+    });
+    this.setState({
+        jobs: newJob
+    });
   }
-  getFilter = (name) =>{
-    let jobs = this.state.jobs;
+
+  // filter jobs by name
+  onFilterName = (name) =>{
+    let jobs = JSON.parse(localStorage.getItem('jobs'));
     if(name){
-      let result;
-      console.log(jobs);
       const newjobs = jobs.filter((job) =>{          
-        return result = job.name.toLowerCase().includes(name) !== false;
-        
-        // return result = job.name.includes(name.toLowercase()) !== false;
-
+        return job.name.toLowerCase().indexOf(name) !== -1;
       });
-
       this.setState({
-          jobs: newjobs
+        jobs: newjobs
       });
     }else{
-      let jobs = JSON.parse(localStorage.getItem('jobs'));
       this.setState({
         jobs: jobs
       });
     }
   }
+
+
+
+
+
 
   render() {
     const {jobEdit, filter } = this.state;
@@ -174,7 +181,8 @@ class Main extends React.Component {
                           onChangeStatus={this.onChangeStatus}
                           onDeleteJob = {this.onDeleteJob}
                           onEditJob = {this.onEditJob}
-                          onFilter = {this.onFilter}
+                          onFilterStatus = {this.onFilterStatus}
+                          onFilterName = {this.onFilterName}
                 /> 
               </div>
             </div>

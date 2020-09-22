@@ -8,7 +8,8 @@ class JobLists extends React.Component {
       filterStatus: -1
     }
   }
-  onChange = (event) =>{
+  // get data select filter status
+  hanldeFilterStatus = (event) =>{
     var target = event.target;
     var name = target.name;
     var value = target.value;
@@ -17,10 +18,18 @@ class JobLists extends React.Component {
       [name] : value
     })
 
-    this.props.onFilter( name === 'filterName' ? value : this.state.filterName,
-                         name === 'filterStatus' ? value : this.state.filterStatus,
-    )
-    
+    this.props.onFilterStatus( name === 'filterStatus' ? value : this.state.filterStatus);
+  }
+
+  // get data input filter name
+  hanldeFilterName = (event) =>{
+    var target = event.target;
+    var name = target.name;
+    var value = target.value;
+    this.setState({
+      [name] : value
+    })
+    this.props.onFilterName( name === 'filterName' ? value : this.state.filterName);
   }
   
   render() {
@@ -28,7 +37,7 @@ class JobLists extends React.Component {
     let {filterName, filterStatus} = this.state;
     let elmJob = itemJobs.map((job, index) =>{
 
-        let result =  <JobItems key={index} 
+        let result =  <JobItems key={index}
                                 id={job.id}
                                 stt={index} 
                                 name={job.name} 
@@ -65,7 +74,7 @@ class JobLists extends React.Component {
                            className="vv-input-search-table form-control" 
                            name="filterName"
                            value={filterName}
-                           onChange = {this.onChange}
+                           onChange = {this.hanldeFilterName}
                     /> 
                   </td>
                   <td></td>
@@ -74,7 +83,7 @@ class JobLists extends React.Component {
                     <select className="vv-select-status form-control"
                             name="filterStatus"
                             value={this.state.filterStatus}
-                            onChange = {this.onChange}
+                            onChange = {this.hanldeFilterStatus}
                     >
                       <option value={-1}>ALL</option>
                       <option value={1}>Active</option>
