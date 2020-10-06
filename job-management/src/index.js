@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './test.scss';
 import Job_Management from './Job_Management';
 import * as serviceWorker from './serviceWorker';
 

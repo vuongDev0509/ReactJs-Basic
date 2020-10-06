@@ -8,6 +8,8 @@ class JobLists extends React.Component {
       filterStatus: -1
     }
   }
+  
+
   // get data select filter status
   hanldeFilterStatus = (event) =>{
     var target = event.target;
@@ -15,10 +17,10 @@ class JobLists extends React.Component {
     var value = target.value;
     
     this.setState({
-      [name] : value
+      [name] : parseInt(value)
     })
 
-    this.props.onFilterStatus( name === 'filterStatus' ? value : this.state.filterStatus);
+    this.props.onFilterAll( this.state.filterName, parseInt(value));
   }
 
   // get data input filter name
@@ -29,14 +31,21 @@ class JobLists extends React.Component {
     this.setState({
       [name] : value
     })
-    this.props.onFilterName( name === 'filterName' ? value : this.state.filterName);
+   
+    this.props.onFilterAll(value, parseInt(this.state.filterStatus));
   }
+
   
   render() {
     let itemJobs = this.props.jobs;
     let {filterName, filterStatus} = this.state;
+    
     let elmJob = itemJobs.map((job, index) =>{
+        if(job == undefined) return  false;
 
+        console.log(this.props.status); 
+        // check status  job for filter
+        if(this.props.status != -1 && job.status != this.props.status) return;
         let result =  <JobItems key={index}
                                 id={job.id}
                                 stt={index} 
@@ -73,7 +82,7 @@ class JobLists extends React.Component {
                     <input type="text" 
                            className="vv-input-search-table form-control" 
                            name="filterName"
-                           value={filterName}
+                           value={this.state.filterName}
                            onChange = {this.hanldeFilterName}
                     /> 
                   </td>

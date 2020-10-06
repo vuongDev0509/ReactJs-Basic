@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { v4 as uuidv4 } from 'uuid';
 import TaskForm from './taskForm.js';
 import ControlForm from './ControlForm.js';
@@ -10,6 +11,7 @@ class Main extends React.Component {
       jobs: [],
       isDisplayForm: false,
       jobEdit: null, 
+      status: -1,
       filter: {
         name: '',
         status: -1
@@ -121,46 +123,47 @@ class Main extends React.Component {
     this.onShowForm();
   }
 
-
-  // filter jobs by status
-  onFilterStatus = (status) =>{  
+  // filter job by name and status
+  onFilterAll = (name, status) =>{
     let jobs = JSON.parse(localStorage.getItem('jobs'));
-    let newJob = jobs.filter((job) =>{
-      if (job.status == status) {
-        return jobs;
-      }else if(status == -1){
-        return jobs = JSON.parse(localStorage.getItem('jobs'));
+   
+    let newsJobs = jobs.filter((item) =>{
+      
+      if(name.trim() == "" &&  status !== -1){
+
+        if(item.status == status){
+          return item;
+        } 
+
+      }else if(name.trim() == "" &&  status == -1){
+
+        return item = JSON.parse(localStorage.getItem('jobs'));
+      
+      }else if(name.trim !== "" && status == -1){
+        
+        if(item.name.toLowerCase().indexOf(name) !== -1 && status == status){
+          return item;
+        }
+
+      }else if(name.trim !== "" && status !== -1){
+        
+        if(item.name.toLowerCase().indexOf(name) !== -1 && status == status){
+          return item;
+        }
+
+      }else{
+        return alert("Sorry, the filter cannot be used ^__^ ");
       }
+
     });
+
     this.setState({
-        jobs: newJob
+      jobs: newsJobs,
+      status: status
     });
   }
-
-  // filter jobs by name
-  onFilterName = (name) =>{
-    let jobs = JSON.parse(localStorage.getItem('jobs'));
-    if(name){
-      const newjobs = jobs.filter((job) =>{          
-        return job.name.toLowerCase().indexOf(name) !== -1;
-      });
-      this.setState({
-        jobs: newjobs
-      });
-    }else{
-      this.setState({
-        jobs: jobs
-      });
-    }
-  }
-
-
-
-
-
-
   render() {
-    const {jobEdit, filter } = this.state;
+    const {jobEdit, filter, status } = this.state;
     let jobs = this.state.jobs;
     let isDisplayForm = this.state.isDisplayForm;
     let elmDisplayForm = isDisplayForm === true ? <TaskForm jobEdit={jobEdit}  onToggleForm = {this.onToggleForm}  onSubmit={this.onSubmit} />  : "";
@@ -181,8 +184,8 @@ class Main extends React.Component {
                           onChangeStatus={this.onChangeStatus}
                           onDeleteJob = {this.onDeleteJob}
                           onEditJob = {this.onEditJob}
-                          onFilterStatus = {this.onFilterStatus}
-                          onFilterName = {this.onFilterName}
+                          onFilterAll = {this.onFilterAll}
+                          status = {status}
                 /> 
               </div>
             </div>
