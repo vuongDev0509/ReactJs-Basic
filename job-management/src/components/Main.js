@@ -162,6 +162,56 @@ class Main extends React.Component {
       status: status
     });
   }
+
+  // funtion search job
+  onSearch = (key) =>{
+    let jobs = JSON.parse(localStorage.getItem('jobs'));
+    if(key){
+      var newsJobs =  jobs.filter((item) =>{
+        return item.name.toLowerCase().indexOf(key) !== -1;
+      });
+    }else{
+      this.setState({
+        jobs: jobs
+      })
+    }
+     this.setState({
+      jobs: newsJobs,
+    });
+  }
+
+  // function sort job
+  onSort = (sortBy, sortValue) =>{
+    let jobs = this.state.jobs;
+    if(sortBy === 'name'){
+      var jobsSort = jobs.sort((a, b) =>{
+        if(a.name > b.name){
+         return sortValue;
+        } 
+        else if (a.name < b.name){
+         return -sortValue;
+        } 
+        else{
+          return 0;
+        } 
+      });
+    }else{
+     var jobsSort = jobs.sort((a, b) =>{
+        if(a.status > b.status){
+         return -sortValue;
+        } 
+        else if (a.status < b.status){
+         return sortValue;
+        } 
+        else{
+          return 0;
+        } 
+      });
+    }
+    this.setState({
+      jobs: jobsSort,
+    });
+  }
   render() {
     const {jobEdit, filter, status } = this.state;
     let jobs = this.state.jobs;
@@ -175,6 +225,8 @@ class Main extends React.Component {
                     {elmDisplayForm}
                     <ControlForm  isDisplayForm ={isDisplayForm} 
                                   onToggleForm = {this.onToggleForm} 
+                                  onSearch = {this.onSearch}
+                                  onSort = {this.onSort}
                 />
                 </div>
             </div>

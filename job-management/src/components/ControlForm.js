@@ -6,6 +6,12 @@ class ControlForm extends React.Component {
   setToggleForm = () => {
       this.props.onToggleForm(true);
   };
+  onSearch = (key) =>{
+   this.props.onSearch(key);
+  }
+  // onSort = (sortBy, sortValue)=>{
+  //   this.props.onSort(sortBy, sortValue);
+  // }
   render() {
     let elmDisplayForm = this.props.isDisplayForm;
     return (
@@ -19,8 +25,10 @@ class ControlForm extends React.Component {
           </button>
           <div className="vv-content-control"> 
             <div className="row"> 
-              <div className="column col-xl-7 col-md-7 col-lg-12 col-lg-12">  <Search /> </div>
-              <div className="column col-xl-5 col-md-5 col-lg-12 col-lg-12">  <Sort /> </div>
+              <div className="column col-xl-7 col-md-7 col-lg-12 col-lg-12">  <Search  onSearch = {this.onSearch} /> </div>
+              <div className="column col-xl-5 col-md-5 col-lg-12 col-lg-12"> 
+                <Sort onSort ={this.props.onSort}/> 
+              </div>
             </div>
           </div>
         </div>
